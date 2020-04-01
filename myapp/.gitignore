@@ -52,6 +52,7 @@
 # Embedded web-server pid file
 /.web-server-pid
 
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
