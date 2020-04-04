@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,15 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Product extends AbstractEntity
 {
     /**
-     * @var string Name of the product.
-     * 
+     * @var string name of the product
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @var int Price of the product in cents.
-     * 
+     * @var int price of the product in cents
+     *
      * @ORM\Column(type="string")
      */
     private $price;
@@ -50,7 +52,7 @@ class Product extends AbstractEntity
 
     /**
      * @param string $name
-     * 
+     *
      * @return self
      */
     public function setName(string $name): self
@@ -70,7 +72,7 @@ class Product extends AbstractEntity
 
     /**
      * @param int $price
-     * 
+     *
      * @return self
      */
     public function setPrice(int $price): self

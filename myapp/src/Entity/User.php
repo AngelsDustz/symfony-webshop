@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,22 +13,22 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends AbstractEntity
 {
     /**
-     * @var string The user's e-mail address.
-     * 
+     * @var string the user's e-mail address
+     *
      * @ORM\Column(type="string")
      */
     private $email;
 
     /**
-     * @var string User's first name.
-     * 
+     * @var string user's first name
+     *
      * @ORM\Column(type="string")
      */
     private $firstName;
 
     /**
-     * @var string User's last name.
-     * 
+     * @var string user's last name
+     *
      * @ORM\Column(type="string")
      */
     private $lastName;
@@ -59,7 +61,7 @@ class User extends AbstractEntity
 
     /**
      * @param string $email
-     * 
+     *
      * @return self
      */
     public function setEmail(string $email): self
@@ -79,7 +81,7 @@ class User extends AbstractEntity
 
     /**
      * @param string $firstName
-     * 
+     *
      * @return self
      */
     public function setFirstName(string $firstName): self
@@ -99,7 +101,7 @@ class User extends AbstractEntity
 
     /**
      * @param string $lastName
-     * 
+     *
      * @return self
      */
     public function setLastName(string $lastName): self

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,15 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Order extends AbstractEntity
 {
     /**
-     * @var Product The product ordered.
-     * 
+     * @var Product the product ordered
+     *
      * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     private $product;
 
     /**
-     * @var int Price of the product at the moment of ordering.
+     * @var int price of the product at the moment of ordering
      */
     private $productPrice;
 

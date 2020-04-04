@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Abstract Entity Class.
- * 
+ *
  * @ORM\HasLifecycleCallbacks
  */
 abstract class AbstractEntity
 {
     /**
-     * ID
-     * 
+     * ID.
+     *
      * @ORM\Id
      * @ORM\Column(type="uuid")
      *
@@ -26,15 +28,15 @@ abstract class AbstractEntity
     protected $id;
 
     /**
-     * @var null|DateTimeInterface
-     * 
+     * @var DateTimeInterface|null
+     *
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $updatedAt;
 
     /**
-     * @var null|DateTimeInterface
-     * 
+     * @var DateTimeInterface|null
+     *
      * @ORM\Column(type="datetime")
      */
     protected $createdAt;
@@ -59,7 +61,7 @@ abstract class AbstractEntity
 
     /**
      * @ORM\PreUpdate
-     * 
+     *
      * @return void
      */
     public function preUpdate(): void
