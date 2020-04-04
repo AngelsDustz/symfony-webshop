@@ -25,5 +25,8 @@ class Order extends AbstractEntity
      */
     private $productPrice;
 
+    /**
+     * @var int percentage tax
+     */
     private $tax;
 }
