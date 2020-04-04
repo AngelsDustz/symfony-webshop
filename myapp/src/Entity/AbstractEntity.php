@@ -11,8 +11,6 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * Abstract Entity Class.
- *
  * @ORM\HasLifecycleCallbacks
  */
 abstract class AbstractEntity
