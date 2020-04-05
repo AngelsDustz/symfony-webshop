@@ -1,67 +1,55 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
-class User extends AbstractEntity
+class User extends AbstractEntity implements UserInterface
 {
     /**
-     * @var string the user's e-mail address
-     *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
-     * @var string user's first name
-     *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="json")
      */
-    private $firstName;
+    private $roles = [];
 
     /**
-     * @var string user's last name
-     *
+     * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $lastName;
+    private $password;
 
     /**
-     * User Constructor.
-     *
      * @param string $email
-     * @param string $firstName
-     * @param string $lastName
      */
-    public function __construct(string $email, string $firstName, string $lastName)
+    public function __construct(string $email)
     {
         parent::__construct();
 
         $this
             ->setEmail($email)
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
         ;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     /**
      * @param string $email
-     *
+     * 
      * @return self
      */
     public function setEmail(string $email): self
@@ -72,42 +60,73 @@ class User extends AbstractEntity
     }
 
     /**
-     * @return string
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
      */
-    public function getFirstName(): string
+    public function getUsername(): string
     {
-        return $this->firstName;
+        return (string) $this->email;
     }
 
     /**
-     * @param string $firstName
-     *
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param array $roles
+     * 
      * @return self
      */
-    public function setFirstName(string $firstName): self
+    public function setRoles(array $roles): self
     {
-        $this->firstName = $firstName;
+        $this->roles = $roles;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @see UserInterface
      */
-    public function getLastName(): string
+    public function getPassword(): string
     {
-        return $this->lastName;
+        return (string) $this->password;
     }
 
     /**
-     * @param string $lastName
-     *
+     * @param string $password
+     * 
      * @return self
      */
-    public function setLastName(string $lastName): self
+    public function setPassword(string $password): self
     {
-        $this->lastName = $lastName;
+        $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

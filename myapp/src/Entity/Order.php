@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
@@ -12,6 +13,30 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order extends AbstractEntity
 {
+    /**
+     * A new order
+     */
+    public const STATUS_NEW = 0;
+
+    /**
+     * The order has been paid for
+     */
+    public const STATUS_PAID = 50;
+
+    /**
+     * The order was cancelled
+     */
+    public const STATUS_CANCELLED = 100;
+
+    /**
+     * Collection of all Statuses
+     */
+    public const STATUSES = [
+        self::STATUS_NEW        => 'new',
+        self::STATUS_PAID       => 'paid',
+        self::STATUS_CANCELLED  => 'cancelled',
+    ];
+
     /**
      * @var Product the product ordered
      *
@@ -39,6 +64,11 @@ class Order extends AbstractEntity
     private $orderLine;
 
     /**
+     * @var int status of the order @see STATUSES
+     */
+    private $status;
+
+    /**
      * @param Product   $product
      * @param OrderLine $orderLine
      * @param int       $tax
@@ -51,6 +81,7 @@ class Order extends AbstractEntity
             ->setProduct($product)
             ->setOrderLine($orderLine)
             ->setTax($tax)
+            ->setStatus(self::STATUS_NEW)
         ;
     }
 
@@ -111,6 +142,35 @@ class Order extends AbstractEntity
     public function setOrderLine(OrderLine $orderLine): self
     {
         $this->orderLine = $orderLine;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param integer $status
+     * 
+     * @throws InvalidArgumentException
+     * 
+     * @return self
+     */
+    public function setStatus(int $status): self
+    {
+        if (false === in_array($status, self::STATUSES)) {
+            throw new InvalidArgumentException(sprintf(
+                'Status %d is not a valid status',
+                $status
+            ));
+        }
+
+        $this->status = $status;
 
         return $this;
     }
