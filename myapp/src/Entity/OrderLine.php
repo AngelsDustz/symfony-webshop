@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderLineRepository")
@@ -14,18 +14,124 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderLine extends AbstractEntity
 {
     /**
-     * @var Collection<int, Order>
-     *
-     * @ORM\OneToMany(targetEntity="Order", mappedBy="orderLine")
+     * A new order
      */
-    private $orders;
+    public const STATUS_NEW = 0;
 
     /**
-     * @return Collection<int, Order>
+     * The order has been paid for
      */
-    public function getOrders(): Collection
+    public const STATUS_PAID = 50;
+
+    /**
+     * The order was cancelled
+     */
+    public const STATUS_CANCELLED = 100;
+
+    /**
+     * Collection of all Statuses
+     */
+    public const STATUSES = [
+        self::STATUS_NEW        => 'new',
+        self::STATUS_PAID       => 'paid',
+        self::STATUS_CANCELLED  => 'cancelled',
+    ];
+
+    /**
+     * @var Product the product ordered
+     *
+     * @ORM\ManyToOne(targetEntity="Product")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     */
+    private $product;
+
+    /**
+     * @var int price of the product at the moment of ordering
+     */
+    private $productPrice;
+
+    /**
+     * @var int percentage tax
+     */
+    private $tax;
+
+    /**
+     * @var Order
+     *
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderLines")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     */
+    private $order;
+
+    /**
+     * @var int status of the order @see STATUSES
+     */
+    private $status;
+
+    /**
+     * @param Product   $product
+     * @param Order $order
+     * @param int       $tax
+     */
+    public function __construct(Product $product, Order $order, int $tax)
     {
-        return $this->orders;
+        parent::__construct();
+
+        $this
+            ->setProduct($product)
+            ->setOrder($order)
+            ->setTax($tax)
+            ->setStatus(self::STATUS_NEW)
+        ;
+    }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): self
+    {
+        $this->product = $product;
+        $this->productPrice = $product->getPrice();
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductPrice(): int
+    {
+        return $this->productPrice;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTax(): int
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param int $tax
+     *
+     * @return self
+     */
+    public function setTax(int $tax): self
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder(): Order
+    {
+        return $this->order;
     }
 
     /**
@@ -33,11 +139,38 @@ class OrderLine extends AbstractEntity
      *
      * @return self
      */
-    public function addOrder(Order $order): self
+    public function setOrder(Order $order): self
     {
-        if (false === $this->orders->contains($order)) {
-            $this->orders->add($order);
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param integer $status
+     * 
+     * @throws InvalidArgumentException
+     * 
+     * @return self
+     */
+    public function setStatus(int $status): self
+    {
+        if (false === in_array($status, self::STATUSES)) {
+            throw new InvalidArgumentException(sprintf(
+                'Status %d is not a valid status',
+                $status
+            ));
         }
+
+        $this->status = $status;
 
         return $this;
     }

@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+use App\Entity\Order;
+use App\Entity\Address;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -28,14 +32,43 @@ class User extends AbstractEntity implements UserInterface
     private $password;
 
     /**
+     * @var Collection<int, Order>
+     * 
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="user")
+     */
+    private $orders;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(type="string")
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(type="string")
+     */
+    private $lastName;
+
+    /**
+     * @var Collection<int, Address>
+     * 
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
+     */
+    private $addresses;
+
+    /**
      * @param string $email
      */
-    public function __construct(string $email)
+    public function __construct(string $email, string $firstName, string $lastName)
     {
         parent::__construct();
 
         $this
             ->setEmail($email)
+            ->setOrders(new ArrayCollection())
         ;
     }
 
@@ -114,11 +147,44 @@ class User extends AbstractEntity implements UserInterface
     }
 
     /**
+     * @return Collection
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @param Collection<int, Order> $collection
+     * 
+     * @return self
+     */
+    public function setOrders(Collection $collection): self
+    {
+        $this->orders = $collection;
+
+        return $this;
+    }
+
+    /**
+     * @param Order $order
+     * 
+     * @return self
+     */
+    public function addOrder(Order $order): self
+    {
+        if (false === $this->orders->contains($order)) {
+            $this->orders->add($order);
+        }
+
+        return $this;
+    }
+    
+    /**
      * @see UserInterface
      */
     public function getSalt()
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**
@@ -126,7 +192,5 @@ class User extends AbstractEntity implements UserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 }

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\User;
+use App\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
@@ -14,124 +17,46 @@ use InvalidArgumentException;
 class Order extends AbstractEntity
 {
     /**
-     * A new order
-     */
-    public const STATUS_NEW = 0;
-
-    /**
-     * The order has been paid for
-     */
-    public const STATUS_PAID = 50;
-
-    /**
-     * The order was cancelled
-     */
-    public const STATUS_CANCELLED = 100;
-
-    /**
-     * Collection of all Statuses
-     */
-    public const STATUSES = [
-        self::STATUS_NEW        => 'new',
-        self::STATUS_PAID       => 'paid',
-        self::STATUS_CANCELLED  => 'cancelled',
-    ];
-
-    /**
-     * @var Product the product ordered
+     * @var Collection<int, OrderLine>
      *
-     * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="OrderLine", mappedBy="order")
      */
-    private $product;
+    private $orderLines;
 
     /**
-     * @var int price of the product at the moment of ordering
+     * @var Collection<int, Invoice>
+     * 
+     * @ORM\OneToMany(targetEntity="Invoice", mappedBy="order")
      */
-    private $productPrice;
+    private $invoices;
 
     /**
-     * @var int percentage tax
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="orders")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $tax;
+    private $user;
 
     /**
-     * @var OrderLine
-     *
-     * @ORM\ManyToOne(targetEntity="OrderLine", inversedBy="orders")
-     * @ORM\JoinColumn(name="order_line_id", referencedColumnName="id")
+     * Order Constructor.
      */
-    private $orderLine;
-
-    /**
-     * @var int status of the order @see STATUSES
-     */
-    private $status;
-
-    /**
-     * @param Product   $product
-     * @param OrderLine $orderLine
-     * @param int       $tax
-     */
-    public function __construct(Product $product, OrderLine $orderLine, int $tax)
+    public function __construct(User $user)
     {
-        parent::__construct();
+        $this->orderLines   = new ArrayCollection();
+        $this->invoices     = new ArrayCollection();
 
         $this
-            ->setProduct($product)
-            ->setOrderLine($orderLine)
-            ->setTax($tax)
-            ->setStatus(self::STATUS_NEW)
+            ->setUser($user)
         ;
     }
 
-    public function getProduct(): Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(Product $product): self
-    {
-        $this->product = $product;
-        $this->productPrice = $product->getPrice();
-
-        return $this;
-    }
-
     /**
-     * @return int
+     * @return Collection<int, OrderLines>
      */
-    public function getProductPrice(): int
+    public function getOrderLines(): Collection
     {
-        return $this->productPrice;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTax(): int
-    {
-        return $this->tax;
-    }
-
-    /**
-     * @param int $tax
-     *
-     * @return self
-     */
-    public function setTax(int $tax): self
-    {
-        $this->tax = $tax;
-
-        return $this;
-    }
-
-    /**
-     * @return OrderLine
-     */
-    public function getOrderLine(): OrderLine
-    {
-        return $this->orderLine;
+        return $this->orderLines;
     }
 
     /**
@@ -139,38 +64,53 @@ class Order extends AbstractEntity
      *
      * @return self
      */
-    public function setOrderLine(OrderLine $orderLine): self
+    public function addOrderLine(OrderLine $orderLine): self
     {
-        $this->orderLine = $orderLine;
+        if (false === $this->orderLines->contains($orderLine)) {
+            $this->orderLines->add($orderLine);
+        }
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return Collection<int, Invoice>
      */
-    public function getStatus(): int
+    public function getInvoices(): Collection
     {
-        return $this->status;
+        return $this->invoices;
     }
 
     /**
-     * @param integer $status
-     * 
-     * @throws InvalidArgumentException
+     * @param Invoice $invoice
      * 
      * @return self
      */
-    public function setStatus(int $status): self
+    public function addInvoice(Invoice $invoice): self
     {
-        if (false === in_array($status, self::STATUSES)) {
-            throw new InvalidArgumentException(sprintf(
-                'Status %d is not a valid status',
-                $status
-            ));
+        if (false === $this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
         }
 
-        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * 
+     * @return self
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
