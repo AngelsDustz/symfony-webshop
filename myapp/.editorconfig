@@ -1,0 +1,4 @@
+root = true
+
+[*.{html, twig, js, es6, scss, css}]
+indent_size = 2

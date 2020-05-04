@@ -15,26 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * FIXME this is a really ugly fix, we can do this better right?
-     *
-     * @Route("/", methods={"GET"})
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function base(Request $request): Response
-    {
-        return $this->redirectToRoute(
-            'home',
-            ['_locale' => $request->getLocale()]
-        );
-    }
-
-    /**
      * Home Action.
      *
-     * @Route("/{_locale}", methods={"GET"}, name="home")
+     * @Route("/", methods={"GET"}, name="home")
      *
      * @return Response
      */
