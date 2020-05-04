@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
+ * @ORM\Table(name="addresses")
  */
 class Address extends AbstractEntity
 {
