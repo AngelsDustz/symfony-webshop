@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,56 +13,56 @@ class Address extends AbstractEntity
 {
     /**
      * @var string Housenumber and Addition
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $houseNumber;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $street;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $postCode;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $country;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $district;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $city;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $county;
 
     /**
      * @var User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="user", inversedBy="addresses")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -69,7 +71,7 @@ class Address extends AbstractEntity
     /**
      * Address constructor.
      *
-     * @param User $user
+     * @param User   $user
      * @param string $country
      * @param string $postCode
      * @param string $houseNumber

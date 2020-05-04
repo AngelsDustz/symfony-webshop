@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,6 +39,11 @@ abstract class AbstractEntity
      * @ORM\Column(type="datetime")
      */
     protected $createdAt;
+
+    /**
+     * @var Slugify|null
+     */
+    protected $slugify;
 
     /**
      * Constructor.
@@ -89,5 +95,17 @@ abstract class AbstractEntity
     public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return Slugify
+     */
+    protected function getSlugify(): Slugify
+    {
+        if (null === $this->slugify) {
+            $this->slugify = new Slugify();
+        }
+
+        return $this->slugify;
     }
 }

@@ -32,6 +32,9 @@ return PhpCsFixer\Config::create()
         'psr4' => true,
         'strict_comparison' => true,
         'void_return' => true,
+        'binary_operator_spaces' => [
+            'align_equals' => true,
+        ],
     ])
     ->setFinder($finder)
 ;

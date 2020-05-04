@@ -14,27 +14,27 @@ use InvalidArgumentException;
 class OrderLine extends AbstractEntity
 {
     /**
-     * A new order
+     * A new order.
      */
     public const STATUS_NEW = 0;
 
     /**
-     * The order has been paid for
+     * The order has been paid for.
      */
     public const STATUS_PAID = 50;
 
     /**
-     * The order was cancelled
+     * The order was cancelled.
      */
     public const STATUS_CANCELLED = 100;
 
     /**
-     * Collection of all Statuses
+     * Collection of all Statuses.
      */
     public const STATUSES = [
-        self::STATUS_NEW        => 'new',
-        self::STATUS_PAID       => 'paid',
-        self::STATUS_CANCELLED  => 'cancelled',
+        self::STATUS_NEW => 'new',
+        self::STATUS_PAID => 'paid',
+        self::STATUS_CANCELLED => 'cancelled',
     ];
 
     /**
@@ -69,9 +69,9 @@ class OrderLine extends AbstractEntity
     private $status;
 
     /**
-     * @param Product   $product
-     * @param Order $order
-     * @param int       $tax
+     * @param Product $product
+     * @param Order   $order
+     * @param int     $tax
      */
     public function __construct(Product $product, Order $order, int $tax)
     {
@@ -92,7 +92,7 @@ class OrderLine extends AbstractEntity
 
     public function setProduct(Product $product): self
     {
-        $this->product = $product;
+        $this->product      = $product;
         $this->productPrice = $product->getPrice();
 
         return $this;
@@ -155,19 +155,16 @@ class OrderLine extends AbstractEntity
     }
 
     /**
-     * @param integer $status
-     * 
+     * @param int $status
+     *
      * @throws InvalidArgumentException
-     * 
+     *
      * @return self
      */
     public function setStatus(int $status): self
     {
-        if (false === in_array($status, self::STATUSES)) {
-            throw new InvalidArgumentException(sprintf(
-                'Status %d is not a valid status',
-                $status
-            ));
+        if (false === \in_array($status, self::STATUSES)) {
+            throw new InvalidArgumentException(sprintf('Status %d is not a valid status', $status));
         }
 
         $this->status = $status;

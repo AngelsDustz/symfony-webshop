@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +29,13 @@ class Product extends AbstractEntity
     private $price;
 
     /**
+     * @var Collection<int, Category>
+     *
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="product")
+     */
+    private $categories;
+
+    /**
      * Product Constructor.
      *
      * @param string $name
@@ -39,6 +48,7 @@ class Product extends AbstractEntity
         $this
             ->setName($name)
             ->setPrice($price)
+            ->setCategories(new ArrayCollection())
         ;
     }
 
@@ -78,6 +88,26 @@ class Product extends AbstractEntity
     public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param Collection<int, Category> $categories
+     *
+     * @return Product
+     */
+    public function setCategories(Collection $categories): self
+    {
+        $this->categories = $categories;
 
         return $this;
     }

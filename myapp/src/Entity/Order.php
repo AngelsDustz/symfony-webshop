@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\User;
-use App\Entity\Invoice;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
@@ -25,14 +23,14 @@ class Order extends AbstractEntity
 
     /**
      * @var Collection<int, Invoice>
-     * 
+     *
      * @ORM\OneToMany(targetEntity="Invoice", mappedBy="order")
      */
     private $invoices;
 
     /**
      * @var User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="orders")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -40,11 +38,15 @@ class Order extends AbstractEntity
 
     /**
      * Order Constructor.
+     *
+     * @param User $user
      */
     public function __construct(User $user)
     {
-        $this->orderLines   = new ArrayCollection();
-        $this->invoices     = new ArrayCollection();
+        parent::__construct();
+
+        $this->orderLines = new ArrayCollection();
+        $this->invoices   = new ArrayCollection();
 
         $this
             ->setUser($user)
@@ -52,7 +54,7 @@ class Order extends AbstractEntity
     }
 
     /**
-     * @return Collection<int, OrderLines>
+     * @return Collection<int, OrderLine>
      */
     public function getOrderLines(): Collection
     {
@@ -83,7 +85,7 @@ class Order extends AbstractEntity
 
     /**
      * @param Invoice $invoice
-     * 
+     *
      * @return self
      */
     public function addInvoice(Invoice $invoice): self
@@ -105,7 +107,7 @@ class Order extends AbstractEntity
 
     /**
      * @param User $user
-     * 
+     *
      * @return self
      */
     public function setUser(User $user): self

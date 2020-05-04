@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -14,45 +16,50 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User extends AbstractEntity implements UserInterface
 {
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
+     * @var array<string>
+     *
      * @ORM\Column(type="json")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
+     *
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
      * @var Collection<int, Order>
-     * 
+     *
      * @ORM\OneToMany(targetEntity="Order", mappedBy="user")
      */
     private $orders;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $firstName;
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(type="string")
      */
     private $lastName;
 
     /**
      * @var Collection<int, Address>
-     * 
+     *
      * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
      */
     private $addresses;
@@ -84,7 +91,7 @@ class User extends AbstractEntity implements UserInterface
 
     /**
      * @param string $email
-     * 
+     *
      * @return self
      */
     public function setEmail(string $email): self
@@ -98,14 +105,18 @@ class User extends AbstractEntity implements UserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     *
+     * @return string
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
      * @see UserInterface
+     *
+     * @return array<string>
      */
     public function getRoles(): array
     {
@@ -117,8 +128,8 @@ class User extends AbstractEntity implements UserInterface
     }
 
     /**
-     * @param array $roles
-     * 
+     * @param array<string> $roles
+     *
      * @return self
      */
     public function setRoles(array $roles): self
@@ -138,7 +149,7 @@ class User extends AbstractEntity implements UserInterface
 
     /**
      * @param string $password
-     * 
+     *
      * @return self
      */
     public function setPassword(string $password): self
@@ -149,7 +160,7 @@ class User extends AbstractEntity implements UserInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, Order>
      */
     public function getOrders(): Collection
     {
@@ -158,7 +169,7 @@ class User extends AbstractEntity implements UserInterface
 
     /**
      * @param Collection<int, Order> $collection
-     * 
+     *
      * @return self
      */
     public function setOrders(Collection $collection): self
@@ -170,7 +181,7 @@ class User extends AbstractEntity implements UserInterface
 
     /**
      * @param Order $order
-     * 
+     *
      * @return self
      */
     public function addOrder(Order $order): self
@@ -181,18 +192,21 @@ class User extends AbstractEntity implements UserInterface
 
         return $this;
     }
-    
+
     /**
      * @see UserInterface
+     *
+     * @return string|null
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
+        return null;
     }
 
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
@@ -237,7 +251,7 @@ class User extends AbstractEntity implements UserInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, Address>
      */
     public function getAddresses(): Collection
     {
