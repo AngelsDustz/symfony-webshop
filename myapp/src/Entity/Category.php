@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,12 +28,12 @@ class Category extends AbstractEntity
     private $slug;
 
     /**
-     * @var Product
+     * @var Collection<int, Product>
      *
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="categories")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="categories")
+     * @ORM\JoinTable(name="category_products")
      */
-    private $product;
+    private $products;
 
     /**
      * Category constructor.
@@ -44,6 +46,7 @@ class Category extends AbstractEntity
 
         $this
             ->setName($name)
+            ->setProducts(new ArrayCollection())
         ;
     }
 
@@ -89,6 +92,26 @@ class Category extends AbstractEntity
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param Collection<int, Product> $products
+     *
+     * @return Category
+     */
+    public function setProducts(Collection $products): self
+    {
+        $this->products = $products;
 
         return $this;
     }

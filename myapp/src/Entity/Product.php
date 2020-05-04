@@ -31,7 +31,7 @@ class Product extends AbstractEntity
     /**
      * @var Collection<int, Category>
      *
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="product")
+     * @ORM\ManyToMany(targetEntity="Category", mappedBy="product")
      */
     private $categories;
 

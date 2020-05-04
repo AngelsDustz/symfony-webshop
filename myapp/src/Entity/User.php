@@ -140,7 +140,7 @@ class User extends AbstractEntity implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @return string
      */
     public function getPassword(): string
     {
@@ -204,7 +204,7 @@ class User extends AbstractEntity implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @return void
      */
     public function eraseCredentials(): void
     {

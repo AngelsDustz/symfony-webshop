@@ -1,4 +1,4 @@
 root = true
 
-[*.{html, twig, js, es6, scss, css}]
+[*.{html, twig, js, es6, scss, css, yaml, yml}]
 indent_size = 2
