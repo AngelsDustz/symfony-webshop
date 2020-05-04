@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Order;
-use App\Entity\Address;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -61,6 +59,8 @@ class User extends AbstractEntity implements UserInterface
 
     /**
      * @param string $email
+     * @param string $firstName
+     * @param string $lastName
      */
     public function __construct(string $email, string $firstName, string $lastName)
     {
@@ -68,6 +68,8 @@ class User extends AbstractEntity implements UserInterface
 
         $this
             ->setEmail($email)
+            ->setFirstName($firstName)
+            ->setLastName($lastName)
             ->setOrders(new ArrayCollection())
         ;
     }
@@ -131,7 +133,7 @@ class User extends AbstractEntity implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     /**
@@ -192,5 +194,81 @@ class User extends AbstractEntity implements UserInterface
      */
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return User
+     */
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return User
+     */
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return $this
+     */
+    public function addAddress(Address $address): self
+    {
+        if (false === $this->getAddresses()->contains($address)) {
+            $this->getAddresses()->add($address);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return $this
+     */
+    public function removeAddress(Address $address): self
+    {
+        if (true === $this->getAddresses()->contains($address)) {
+            $this->getAddresses()->removeElement($address);
+        }
+
+        return $this;
     }
 }
