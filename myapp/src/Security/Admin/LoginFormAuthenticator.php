@@ -6,7 +6,6 @@ namespace App\Security\Admin;
 
 use App\DTO\AdminDTO;
 use App\Entity\Admin;
-use App\Entity\User;
 use App\Form\Type\AdminLoginType;
 use App\Repository\AdminRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -140,7 +139,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      *
      * @return bool
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         if (!$credentials instanceof AdminDTO) {
             throw new \RuntimeException(sprintf('Expected credentials to be of type %s, got %s', AdminDTO::class, \get_class($credentials)));

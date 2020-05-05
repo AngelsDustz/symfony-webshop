@@ -13,11 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
- * Class AdminController.
+ * Class LoginController.
  *
  * @Route("/admin", name="admin_")
  */
-class AdminController extends AbstractController
+class LoginController extends AbstractController
 {
     /**
      * @Route("/login", name="login", methods={"GET", "POST"})
@@ -29,7 +29,7 @@ class AdminController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser() instanceof Admin) {
-            return $this->redirectToRoute('admin.dashboard');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         $adminDTO           = new AdminDTO();
