@@ -50,7 +50,8 @@ abstract class AbstractEntity
      */
     public function __construct()
     {
-        $this->id = Uuid::uuid4();
+        $this->id        = Uuid::uuid4();
+        $this->createdAt = new DateTime('now');
     }
 
     /**

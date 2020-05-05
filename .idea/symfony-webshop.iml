@@ -57,16 +57,19 @@
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/filesystem" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/finder" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/flex" />
+      <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/form" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/framework-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/http-foundation" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/http-kernel" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/inflector" />
+      <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/intl" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/maker-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/mime" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/monolog-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/monolog-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/options-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/orm-pack" />
+      <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/polyfill-intl-icu" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/polyfill-intl-idn" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/polyfill-mbstring" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/polyfill-php73" />
@@ -86,6 +89,7 @@
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/twig-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/twig-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/twig-pack" />
+      <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/validator" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/var-dumper" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/var-exporter" />
       <excludeFolder url="file://$MODULE_DIR$/myapp/vendor/symfony/web-profiler-bundle" />

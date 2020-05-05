@@ -25,7 +25,7 @@ class Admin extends AbstractEntity implements UserInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=180)
+     * @ORM\Column(type="string", length=180, nullable=true)
      */
     private $email;
 
@@ -42,6 +42,24 @@ class Admin extends AbstractEntity implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * Admin constructor.
+     *
+     * @param string $username
+     * @param string $password
+     * @param string|null $email
+     */
+    public function __construct(string $username, string $password, ?string $email)
+    {
+        parent::__construct();
+
+        $this
+            ->setUsername($username)
+            ->setPassword($password)
+            ->setEmail($email)
+        ;
+    }
 
     /**
      * @see UserInterface
@@ -119,5 +137,17 @@ class Admin extends AbstractEntity implements UserInterface
     public function setEmail(?string $email): void
     {
         $this->email = $email;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return Admin
+     */
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 }

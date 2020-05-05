@@ -102,6 +102,10 @@
       <path value="$PROJECT_DIR$/myapp/vendor/symfony/asset" />
       <path value="$PROJECT_DIR$/myapp/vendor/cocur/slugify" />
       <path value="$PROJECT_DIR$/myapp/vendor/willdurand/negotiation" />
+      <path value="$PROJECT_DIR$/myapp/vendor/symfony/form" />
+      <path value="$PROJECT_DIR$/myapp/vendor/symfony/intl" />
+      <path value="$PROJECT_DIR$/myapp/vendor/symfony/polyfill-intl-icu" />
+      <path value="$PROJECT_DIR$/myapp/vendor/symfony/validator" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
