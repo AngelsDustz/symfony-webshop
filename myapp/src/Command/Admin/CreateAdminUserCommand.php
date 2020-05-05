@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Command\Admin;
-
 
 use App\DTO\AdminDTO;
 use App\Factory\AdminFactory;
@@ -11,6 +11,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -38,17 +40,17 @@ class CreateAdminUserCommand extends Command
     /**
      * CreateAdminUserCommand constructor.
      *
-     * @param ValidatorInterface $validator
-     * @param AdminFactory $adminFactory
+     * @param ValidatorInterface     $validator
+     * @param AdminFactory           $adminFactory
      * @param EntityManagerInterface $entityManager
-     * @param string|null $name
+     * @param string|null            $name
      */
     public function __construct(ValidatorInterface $validator, AdminFactory $adminFactory, EntityManagerInterface $entityManager, string $name = null)
     {
         parent::__construct($name);
 
-        $this->validator    = $validator;
-        $this->adminFactory = $adminFactory;
+        $this->validator     = $validator;
+        $this->adminFactory  = $adminFactory;
         $this->entityManager = $entityManager;
     }
 
@@ -66,7 +68,7 @@ class CreateAdminUserCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
@@ -92,8 +94,10 @@ class CreateAdminUserCommand extends Command
 
         $errors = $this->validator->validate($adminDTO);
 
-        if (count($errors) > 0) {
-            $output->writeln((string) $errors);
+        if (\count($errors) > 0) {
+            if ($errors instanceof ConstraintViolationList) {
+                $output->writeln((string) $errors);
+            }
 
             return 1;
         }

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Form\Type;
-
 
 use App\DTO\AdminDTO;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdminLoginType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * @param FormBuilderInterface<mixed> $builder
+     * @param array<mixed> $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('username', TextType::class)
@@ -23,14 +27,17 @@ class AdminLoginType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver
             ->setDefaults([
-                'data_class'            => AdminDTO::class,
-                'allow_extra_fields'    => true,
+                'data_class' => AdminDTO::class,
+                'allow_extra_fields' => true,
             ]);
     }
 }

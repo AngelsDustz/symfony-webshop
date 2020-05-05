@@ -46,8 +46,8 @@ class Admin extends AbstractEntity implements UserInterface
     /**
      * Admin constructor.
      *
-     * @param string $username
-     * @param string $password
+     * @param string      $username
+     * @param string      $password
      * @param string|null $email
      */
     public function __construct(string $username, string $password, ?string $email)

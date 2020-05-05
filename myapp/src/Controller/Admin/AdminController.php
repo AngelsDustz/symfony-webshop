@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Controller\Admin;
-
 
 use App\DTO\AdminDTO;
 use App\Entity\Admin;
@@ -39,7 +39,7 @@ class AdminController extends AbstractController
         return $this->render(
             'admin/security/login.html.twig',
             [
-                'form'  => $form->createView(),
+                'form' => $form->createView(),
                 'error' => $authenticationUtils->getLastAuthenticationError(),
             ]
         );

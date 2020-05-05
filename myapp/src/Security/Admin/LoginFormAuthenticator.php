@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security\Admin;
 
@@ -9,10 +10,8 @@ use App\Entity\User;
 use App\Form\Type\AdminLoginType;
 use App\Repository\AdminRepository;
 use Doctrine\ORM\EntityManagerInterface;
-
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,12 +21,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
@@ -64,16 +60,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     /**
      * LoginFormAuthenticator constructor.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param EntityManagerInterface       $entityManager
+     * @param UrlGeneratorInterface        $urlGenerator
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->entityManager = $entityManager;
-        $this->urlGenerator = $urlGenerator;
+        $this->entityManager   = $entityManager;
+        $this->urlGenerator    = $urlGenerator;
         $this->passwordEncoder = $passwordEncoder;
-        $this->formFactory = Forms::createFormFactory();
+        $this->formFactory     = Forms::createFormFactory();
     }
 
     /**
@@ -97,7 +93,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $form = $this->formFactory->create(AdminLoginType::class, new AdminDTO());
         $form->submit($request->get('admin_login'));
 
-        if ($form->isValid() === false) {
+        if (false === $form->isValid()) {
             throw new CustomUserMessageAuthenticationException('error.authenticate.generic');
         }
 
@@ -110,11 +106,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         );
 
         return $adminDTO;
-
     }
 
     /**
-     * @param mixed $credentials
+     * @param mixed                 $credentials
      * @param UserProviderInterface $userProvider
      *
      * @throws NonUniqueResultException
@@ -140,7 +135,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     }
 
     /**
-     * @param mixed $credentials
+     * @param mixed         $credentials
      * @param UserInterface $user
      *
      * @return bool
@@ -148,16 +143,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function checkCredentials($credentials, UserInterface $user)
     {
         if (!$credentials instanceof AdminDTO) {
-            throw new \RuntimeException(sprintf('Expected credentials to be of type %s, got %s', AdminDTO::class, get_class($credentials)));
+            throw new \RuntimeException(sprintf('Expected credentials to be of type %s, got %s', AdminDTO::class, \get_class($credentials)));
         }
 
         return $this->passwordEncoder->isPasswordValid($user, $credentials->password);
     }
 
     /**
-     * @param Request $request
+     * @param Request        $request
      * @param TokenInterface $token
-     * @param string $providerKey
+     * @param string         $providerKey
      *
      * @throws \Exception
      *
@@ -188,10 +183,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function getPassword($credentials): ?string
     {
         if (!$credentials instanceof AdminDTO) {
-            throw new \RuntimeException(sprintf('Expected credentials to be of type %s, got %s', AdminDTO::class, get_class($credentials)));
+            throw new \RuntimeException(sprintf('Expected credentials to be of type %s, got %s', AdminDTO::class, \get_class($credentials)));
         }
 
         return $credentials->password;
     }
 }
-
