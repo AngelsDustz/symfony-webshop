@@ -7,6 +7,8 @@ namespace App\Repository;
 use App\Entity\Admin;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -24,6 +26,23 @@ class AdminRepository extends ServiceEntityRepository implements PasswordUpgrade
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Admin::class);
+    }
+
+    /**
+     * @param string $username
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     *
+     * @return Admin
+     */
+    public function findOneByUsername(string $username): Admin
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.username = :username')
+            ->setParameter('username', $username)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     /**

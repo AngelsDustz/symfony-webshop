@@ -6,7 +6,7 @@ namespace App\Controller\Admin;
 
 use App\DTO\AdminDTO;
 use App\Entity\Admin;
-use App\Form\Type\Admin\AdminLoginType;
+use App\Form\Type\AdminLoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/login", name="login")
+     * @Route("/login", name="login", methods={"GET", "POST"})
      *
      * @param AuthenticationUtils $authenticationUtils
      *
@@ -32,10 +32,14 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin.dashboard');
         }
 
+        $adminDTO           = new AdminDTO();
+        $adminDTO->username = $authenticationUtils->getLastUsername();
+        $form               = $this->createForm(AdminLoginType::class, $adminDTO);
+
         return $this->render(
             'admin/security/login.html.twig',
             [
-                'last_username' => $authenticationUtils->getLastUsername(),
+                'form'  => $form->createView(),
                 'error' => $authenticationUtils->getLastAuthenticationError(),
             ]
         );
@@ -44,7 +48,8 @@ class AdminController extends AbstractController
     /**
      * @Route("/logout", name="logout")
      */
-    public function logout(): void
+    public function logout(): Response
     {
+        return $this->redirectToRoute('home');
     }
 }

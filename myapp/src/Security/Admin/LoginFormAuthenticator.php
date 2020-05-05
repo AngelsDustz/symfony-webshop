@@ -1,9 +1,20 @@
 <?php
 
-namespace App\Security;
 
+namespace App\Security\Admin;
+
+use App\DTO\AdminDTO;
 use App\Entity\Admin;
+use App\Entity\User;
+use App\Form\Type\AdminLoginType;
+use App\Repository\AdminRepository;
 use Doctrine\ORM\EntityManagerInterface;
+
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +39,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 {
     use TargetPathTrait;
 
+    private const LOGIN_ROUTE = 'admin_login';
+
     /**
      * @var EntityManagerInterface
      */
@@ -39,29 +52,28 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $urlGenerator;
 
     /**
-     * @var CsrfTokenManagerInterface
-     */
-    private $csrfTokenManager;
-
-    /**
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
 
     /**
      * LoginFormAuthenticator constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param UrlGeneratorInterface $urlGenerator
-     * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->formFactory = Forms::createFormFactory();
     }
 
     /**
@@ -71,56 +83,57 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function supports(Request $request): bool
     {
-        return 'admin_login' === $request->attributes->get('_route')
+        return self::LOGIN_ROUTE === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
     /**
      * @param Request $request
      *
-     * @return array<string>
+     * @return AdminDTO
      */
-    public function getCredentials(Request $request): array
+    public function getCredentials(Request $request): AdminDTO
     {
-        $credentials = [
-            'username' => $request->request->get('username'),
-            'password' => $request->request->get('password'),
-            'csrf_token' => $request->request->get('_csrf_token'),
-        ];
+        $form = $this->formFactory->create(AdminLoginType::class, new AdminDTO());
+        $form->submit($request->get('admin_login'));
+
+        if ($form->isValid() === false) {
+            throw new CustomUserMessageAuthenticationException('error.authenticate.generic');
+        }
+
+        /** @var AdminDTO $adminDTO */
+        $adminDTO = $form->getData();
 
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['username']
+            $adminDTO->username
         );
 
-        return $credentials;
+        return $adminDTO;
+
     }
 
     /**
      * @param mixed $credentials
      * @param UserProviderInterface $userProvider
      *
-     * @throws InvalidCsrfTokenException
-     * @throws CustomUserMessageAuthenticationException
+     * @throws NonUniqueResultException
      *
-     * @return Admin|null
+     * @return Admin
      */
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): Admin
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+        if (!$credentials instanceof AdminDTO) {
+            throw new CustomUserMessageAuthenticationException('error.authenticate.generic');
         }
 
-        $user = $this->entityManager->getRepository(Admin::class)->findOneBy(['username' => $credentials['username']]);
+        /** @var AdminRepository $adminRepository */
+        $adminRepository = $this->entityManager->getRepository(Admin::class);
 
-        if ($user === null) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Username could not be found.');
-        }
-
-        if (!$user instanceof Admin) {
-            throw new CustomUserMessageAuthenticationException('Something went wrong.');
+        try {
+            $user = $adminRepository->findOneByUsername($credentials->username);
+        } catch (NoResultException $exception) {
+            throw new CustomUserMessageAuthenticationException('error.authenticate.badLogin');
         }
 
         return $user;
@@ -132,21 +145,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      *
      * @return bool
      */
-    public function checkCredentials($credentials, UserInterface $user): bool
+    public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-    }
+        if (!$credentials instanceof AdminDTO) {
+            throw new \RuntimeException(sprintf('Expected credentials to be of type %s, got %s', AdminDTO::class, get_class($credentials)));
+        }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     *
-     * @param $credentials
-     *
-     * @return string|null
-     */
-    public function getPassword($credentials): ?string
-    {
-        return $credentials['password'];
+        return $this->passwordEncoder->isPasswordValid($user, $credentials->password);
     }
 
     /**
@@ -157,7 +162,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @throws \Exception
      *
      * @return Response
-     *
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): Response
     {
@@ -173,6 +177,21 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('admin_login');
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    /**
+     * @param mixed $credentials
+     *
+     * @return string|null
+     */
+    public function getPassword($credentials): ?string
+    {
+        if (!$credentials instanceof AdminDTO) {
+            throw new \RuntimeException(sprintf('Expected credentials to be of type %s, got %s', AdminDTO::class, get_class($credentials)));
+        }
+
+        return $credentials->password;
     }
 }
+
