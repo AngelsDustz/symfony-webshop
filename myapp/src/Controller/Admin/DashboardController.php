@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractController
 {
     /**
-     * @Route("/dashboard", name="dashboard", methods={"GET"})
+     * @Route("/", name="dashboard", methods={"GET"})
      *
      * @return Response
      */
