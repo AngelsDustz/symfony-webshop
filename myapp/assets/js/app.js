@@ -1,12 +1,19 @@
 import '../css/app.scss';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 import Vue from 'vue';
-import App from './views/App';
-import router from "./vue/routes";
+import BootstrapVue from 'bootstrap-vue';
+import router from './router';
+
+import App from './views/App.vue';
+
+Vue.use(BootstrapVue);
 
 const vueApp = new Vue({
   el: '#app',
   router,
-  render: h => h(App),
+  render: (h) => h(App),
 });
 
 export default vueApp;

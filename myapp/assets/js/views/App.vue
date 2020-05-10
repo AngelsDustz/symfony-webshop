@@ -1,17 +1,19 @@
 <template>
-    <v-app>
-        <v-content>
-            <v-container fluid>
-                <router-view></router-view>
-            </v-container>
-        </v-content>
-    </v-app>
+  <div>
+    <base-navbar></base-navbar>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "App",
-    }
+  import BaseNavbar from "../components/BaseNavbar";
+
+  export default {
+    name: "App",
+    components: {
+      BaseNavbar,
+    },
+  }
 </script>
 
 <style scoped>
