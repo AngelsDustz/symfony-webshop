@@ -1,3 +1,4 @@
+/* eslint-disable */
 const Encore = require('@symfony/webpack-encore');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
@@ -12,8 +13,6 @@ Encore
   // public path used by the web server to access the output path
   .setPublicPath('/build')
   .enableVueLoader()
-  // only needed for CDN's or sub-directory deploy
-  //.setManifestKeyPrefix('build/')
 
   /*
    * ENTRY CONFIG
@@ -53,9 +52,6 @@ Encore
 
   // enables Sass/SCSS support
   .enableSassLoader()
-
-// uncomment if you use TypeScript
-//.enableTypeScriptLoader()
 ;
 
 module.exports = Encore.getWebpackConfig();

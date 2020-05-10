@@ -10,6 +10,8 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.13.1",
     "bootstrap4": "^0.0.1-security",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
@@ -17,7 +19,7 @@
     "vue": "^2.6.11",
     "vue-i18n": "^8.17.4",
     "vue-router": "^3.1.6",
-    "bootstrap": "^4.4.1",
-    "bootstrap-vue": "^2.13.1"
+    "webpack-yaml-loader": "^0.2.1",
+    "yaml-loader": "^0.6.0"
   }
 }

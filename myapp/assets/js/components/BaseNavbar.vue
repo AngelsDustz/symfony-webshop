@@ -1,7 +1,7 @@
 <template>
     <div>
       <b-navbar toggleable="lg" type="dark" variant="dark">
-        <b-navbar-brand href="#">Admin Panel</b-navbar-brand>
+        <b-navbar-brand href="#">{{ this.$t('adminPanel') }}</b-navbar-brand>
 
         <b-navbar-toggle target="nar-collapse"></b-navbar-toggle>
 
@@ -11,7 +11,7 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
-            <b-nav-item-dropdown text="User">
+            <b-nav-item-dropdown :text="this.$t('user')">
               <b-dropdown-item href="#">Logout</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
@@ -22,10 +22,9 @@
 
 <script>
     export default {
-        name: "BaseNavbar",
+      name: "BaseNavbar",
     }
 </script>
 
 <style scoped>
-
 </style>
