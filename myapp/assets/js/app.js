@@ -7,6 +7,7 @@ import BootstrapVue from 'bootstrap-vue';
 
 import router from './router';
 import translations from './translations';
+import store from './store';
 
 import App from './views/App.vue';
 
@@ -17,6 +18,7 @@ const vueApp = new Vue({
   router,
   render: (h) => h(App),
   i18n: translations,
+  store,
 });
 
 export default vueApp;
