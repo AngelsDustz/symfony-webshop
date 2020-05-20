@@ -40,4 +40,19 @@ class AdminFactory
 
         return $admin;
     }
+
+    /**
+     * @param Admin $admin
+     *
+     * @return AdminDTO
+     */
+    public function createDTO(Admin $admin): AdminDTO
+    {
+        $adminDTO           = new AdminDTO();
+        $adminDTO->username = $admin->getUsername();
+        $adminDTO->email    = $admin->getEmail();
+        $adminDTO->roles    = $admin->getRoles();
+
+        return $adminDTO;
+    }
 }

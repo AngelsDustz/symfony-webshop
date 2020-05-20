@@ -11,7 +11,7 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
-            <b-nav-item-dropdown :text="this.$t('user')">
+            <b-nav-item-dropdown :text="this.$store.state.user.username">
               <b-dropdown-item href="#">Logout</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>

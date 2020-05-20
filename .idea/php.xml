@@ -106,6 +106,7 @@
       <path value="$PROJECT_DIR$/myapp/vendor/symfony/intl" />
       <path value="$PROJECT_DIR$/myapp/vendor/symfony/polyfill-intl-icu" />
       <path value="$PROJECT_DIR$/myapp/vendor/symfony/validator" />
+      <path value="$PROJECT_DIR$/myapp/vendor/symfony/serializer" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

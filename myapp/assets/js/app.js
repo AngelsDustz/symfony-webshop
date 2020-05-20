@@ -13,10 +13,12 @@ import App from './views/App.vue';
 
 Vue.use(BootstrapVue);
 
+// Define root application.
+Vue.component('App', App);
+
 const vueApp = new Vue({
   el: '#app',
   router,
-  render: (h) => h(App),
   i18n: translations,
   store,
 });

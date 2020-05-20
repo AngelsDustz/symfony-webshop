@@ -29,4 +29,9 @@ class AdminDTO
      * @var string|null
      */
     public $email;
+
+    /**
+     * @var array<string>
+     */
+    public $roles = [];
 }

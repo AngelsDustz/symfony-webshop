@@ -10,8 +10,14 @@
 
   export default {
     name: "App",
+    props: [
+      'user',
+    ],
     components: {
       BaseNavbar,
+    },
+    beforeMount() {
+      this.$store.commit('user/setUser', this.$props.user);
     },
   }
 </script>
