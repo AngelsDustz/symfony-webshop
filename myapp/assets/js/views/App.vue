@@ -1,12 +1,20 @@
 <template>
-  <div>
+  <b-container class="p-0 m-0" fluid="">
     <base-navbar></base-navbar>
-    <router-view></router-view>
-  </div>
+    <b-row no-gutters>
+      <b-col cols="2">
+        <base-sidebar></base-sidebar>
+      </b-col>
+      <b-col>
+        <router-view></router-view>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
   import BaseNavbar from "../components/BaseNavbar";
+  import BaseSidebar from "../components/BaseSidebar";
 
   export default {
     name: "App",
@@ -14,6 +22,7 @@
       'user',
     ],
     components: {
+      BaseSidebar,
       BaseNavbar,
     },
     beforeMount() {

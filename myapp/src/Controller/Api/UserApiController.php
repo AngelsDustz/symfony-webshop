@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserApiController extends AbstractApiController
 {
     /**
-     * @Route("/v1/users", name="latest_users_read", methods={"GET"})
+     * @Route("/v1/users", name="v1_users_read", methods={"GET"})
      *
      * @return JsonResponse
      */
