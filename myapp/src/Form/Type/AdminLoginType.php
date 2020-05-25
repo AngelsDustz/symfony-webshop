@@ -16,7 +16,7 @@ class AdminLoginType extends AbstractType
 {
     /**
      * @param FormBuilderInterface<mixed> $builder
-     * @param array<mixed> $options
+     * @param array<mixed>                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

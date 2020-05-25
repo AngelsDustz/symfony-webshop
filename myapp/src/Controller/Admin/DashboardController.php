@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Controller\Admin;
-
 
 use App\Entity\Admin;
 use App\Factory\AdminFactory;
@@ -49,7 +49,7 @@ class DashboardController extends AbstractController
     {
         // Since this is the SPA path, check if we match login
         // or logout and let Symfony handle it.
-        if (true === in_array($path, ['login', 'logout'])) {
+        if (true === \in_array($path, ['login', 'logout'])) {
             return $this->forward(
                 sprintf(
                     '%s::%s',
@@ -72,7 +72,7 @@ class DashboardController extends AbstractController
                 $user,
                 'json',
                 [
-                    AbstractNormalizer::IGNORED_ATTRIBUTES => ['password']
+                    AbstractNormalizer::IGNORED_ATTRIBUTES => ['password'],
                 ]
             ),
         ]);
