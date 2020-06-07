@@ -36,6 +36,17 @@ class Product extends AbstractEntity
     private $categories;
 
     /**
+     * @var Collection<int, Image>
+     *
+     * @ORM\ManyToMany(targetEntity="Image")
+     * @ORM\JoinTable(name="product_images",
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")}
+     * )
+     */
+    private $images;
+
+    /**
      * Product Constructor.
      *
      * @param string $name
@@ -108,6 +119,28 @@ class Product extends AbstractEntity
     public function setCategories(Collection $categories): self
     {
         $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param Image $image
+     *
+     * @return $this
+     */
+    public function addImage(Image $image): self
+    {
+        if (false === $this->getImages()->contains($image)) {
+            $this->getImages()->add($image);
+        }
 
         return $this;
     }
