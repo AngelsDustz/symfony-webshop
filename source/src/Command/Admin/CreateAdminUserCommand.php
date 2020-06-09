@@ -8,6 +8,8 @@ use App\DTO\AdminDTO;
 use App\Factory\AdminFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -76,6 +78,7 @@ class CreateAdminUserCommand extends Command
     {
         $output->writeln('This commands helps you create a new admin account.');
 
+        /** @var QuestionHelper $helper */
         $helper     = $this->getHelper('question');
         $question   = new Question('Username: ');
 

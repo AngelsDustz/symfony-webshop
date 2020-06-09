@@ -15,6 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AdminLoginType extends AbstractType
 {
     /**
+     * @psalm-suppress TooManyTemplateParams
+     *
      * @param FormBuilderInterface<mixed> $builder
      * @param array<mixed>                $options
      */
