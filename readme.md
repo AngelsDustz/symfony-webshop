@@ -1,5 +1,9 @@
 # Symfony Webshop
 
+**Due to bad planning on at the start, and lack of time this project will be archived.
+it can serve as an example on how to implement a VueJS site next to Symfony site.**
+
+
 This is a project written to show to people asking for a "code sample".
 The reason for a web shop is that it has CRUD action, front-end and back-end.
 
